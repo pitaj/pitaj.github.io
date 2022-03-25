@@ -1,5 +1,3 @@
-# Optimizing Benchpress
-
 Recently, I saw the release of [nom v6](https://github.com/Geal/nom/) and decided I wanted to try it out, and see if I could speed up my hobby JS template compiler, [BenchpressJS](https://github.com/benchpressjs/benchpressjs).
 
 ## Background
