@@ -165,6 +165,8 @@ if index > 0 {
 Ok((input.slice(input.len()..), res))
 ```
 
+{% raw %}
+
 Do you see it? For every byte in the input, we're running the full parsing suite, checking it against 10 parsers! This works, but it's quite naive. For context, Benchpress tokens come in three shapes:
 
 - Interpolation: `{thing_escaped}`, `{{raw_stuff}}`
@@ -190,6 +192,8 @@ lazy_static::lazy_static! {
         .build(PATTERNS);
 }
 ```
+
+{% endraw %}
 
 Now we can use `TOKEN_START` in our hot loop to skip over portions of text with no tokens:
 
@@ -295,6 +299,8 @@ Look at that, tokens parsing is now a small portion of the compilation. This put
 
 ### Optimization #2: Prefixer for external keywords
 
+{% raw %}
+
 The "prefixer" is what I call a simple backwards-compatibility layer which runs before the parsing step. The prefixer is based on Regular Expressions, which results in it being quite slow. It does a few things:
 
 - Detects keywords like `@value`, `@key`, `@index` outside interpolation tokens, and wraps them in curly braces: `{@value}`
@@ -308,6 +314,8 @@ Let's move the first case into our parser instead of relying on Regex. Luckily, 
 ```rust
 static PATTERNS: &[&str] = &["\\{{{", "\\{{", "\\{", "\\<!--", "{", "<!--", "@key", "@value", "@index"];
 ```
+
+{% endraw %}
 
 And then handle those cases in the tokens parser, parsing them as an expression and adding that to our collection of tokens:
 
